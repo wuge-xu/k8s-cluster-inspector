@@ -1,0 +1,28 @@
+================================
+ Kubernetes Cluster Inspector
+================================
+Time: 2026-06-29 10:00:00
+
+Health Score: 77 / 100
+
+Nodes: total=1 ready=1 notReady=0
+Pods: total=15 running=12 pending=1 failed=0 restart>=3=6
+Deployments: total=8 available=8 unavailable=0
+Services: total=19 clusterIP=18 nodePort=0 loadBalancer=1
+PVCs: total=0 bound=0 pending=0 lost=0
+Events: total=120 normal=80 warning=40
+
+Abnormal Pods
+-------------
+kube-system/example-pod reason=HighRestart restart=17
+  suggestion: Check container logs, liveness probe, memory limit, and application errors.
+
+Abnormal PVCs
+-------------
+No abnormal PVCs found.
+
+Recent Warning Events
+---------------------
+monitoring/example-node-exporter object=Pod/example-node-exporter reason=Failed count=314
+  message: failed to generate container spec
+  suggestion: Check kubectl describe output and related workload events.
