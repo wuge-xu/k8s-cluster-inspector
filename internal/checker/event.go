@@ -16,7 +16,12 @@ func CheckEvents(events []corev1.Event, r *model.Report) {
 	for _, event := range events {
 		if event.Type == corev1.EventTypeWarning {
 			r.Events.Warning++
-			reasonCounter[event.Reason]++
+
+			count := int(event.Count)
+			if count <= 0 {
+				count = 1
+			}
+			reasonCounter[event.Reason] += count
 
 			if len(r.AbnormalEvents) < 10 {
 				r.AbnormalEvents = append(r.AbnormalEvents, model.AbnormalEvent{
