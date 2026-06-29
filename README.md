@@ -1,5 +1,7 @@
 # Kubernetes Cluster Inspector
 
+[![CI](https://github.com/wuge-xu/k8s-cluster-inspector/actions/workflows/ci.yml/badge.svg)](https://github.com/wuge-xu/k8s-cluster-inspector/actions/workflows/ci.yml)
+
 A lightweight Kubernetes cluster inspection tool for SRE and platform engineering scenarios.
 
 This project is built with Go and Kubernetes client-go. It inspects Kubernetes cluster resources, calculates a health score, diagnoses abnormal workloads, exports JSON and HTML reports, and exposes Prometheus-style metrics.
@@ -135,6 +137,20 @@ See:
 In SRE and platform engineering work, engineers often need to quickly understand whether a Kubernetes cluster is healthy, which workloads are abnormal, and what the likely troubleshooting direction is.
 
 This project focuses on that scenario. It collects cluster runtime information from the Kubernetes API, summarizes key health indicators, detects abnormal resources, and provides basic diagnosis suggestions.
+
+
+## Testing
+
+Run unit tests:
+
+    go test ./...
+
+Current unit tests cover:
+
+    health score calculation
+    PVC status inspection
+    Kubernetes Warning Event aggregation
+    Namespace summary calculation
 
 ## Roadmap
 
