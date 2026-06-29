@@ -34,6 +34,11 @@ func main() {
 		panic(err)
 	}
 
+	namespaces, err := clientset.CoreV1().Namespaces().List(ctx, metav1.ListOptions{})
+	if err != nil {
+		panic(err)
+	}
+
 	pods, err := clientset.CoreV1().Pods("").List(ctx, metav1.ListOptions{})
 	if err != nil {
 		panic(err)
@@ -69,6 +74,7 @@ func main() {
 	checker.CheckServices(services.Items, &report)
 	checker.CheckPVCs(pvcs.Items, &report)
 	checker.CheckEvents(events.Items, &report)
+	checker.CheckNamespaces(namespaces.Items, pods.Items, deployments.Items, pvcs.Items, &report)
 
 	report.Score = checker.CalculateScore(report)
 

@@ -8,6 +8,8 @@ type Report struct {
 	Services            Services             `json:"services"`
 	PVCs                PVCs                 `json:"pvcs"`
 	Events              Events               `json:"events"`
+	Namespaces          Namespaces           `json:"namespaces"`
+	EventReasons        []EventReason        `json:"event_reasons"`
 	AbnormalPods        []AbnormalPod        `json:"abnormal_pods"`
 	AbnormalDeployments []AbnormalDeployment `json:"abnormal_deployments"`
 	AbnormalPVCs        []AbnormalPVC        `json:"abnormal_pvcs"`
@@ -56,6 +58,30 @@ type Events struct {
 	Total   int `json:"total"`
 	Normal  int `json:"normal"`
 	Warning int `json:"warning"`
+}
+
+type Namespaces struct {
+	Total int                `json:"total"`
+	Items []NamespaceSummary `json:"items"`
+}
+
+type NamespaceSummary struct {
+	Name                   string `json:"name"`
+	PodsTotal              int    `json:"pods_total"`
+	PodsRunning            int    `json:"pods_running"`
+	PodsPending            int    `json:"pods_pending"`
+	PodsFailed             int    `json:"pods_failed"`
+	PodsHighRestart        int    `json:"pods_high_restart"`
+	DeploymentsTotal       int    `json:"deployments_total"`
+	DeploymentsUnavailable int    `json:"deployments_unavailable"`
+	PVCsTotal              int    `json:"pvcs_total"`
+	PVCsPending            int    `json:"pvcs_pending"`
+	PVCsLost               int    `json:"pvcs_lost"`
+}
+
+type EventReason struct {
+	Reason string `json:"reason"`
+	Count  int    `json:"count"`
 }
 
 type AbnormalPod struct {

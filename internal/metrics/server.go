@@ -34,6 +34,12 @@ func Start(r model.Report, addr string) {
 
 		fmt.Fprintf(w, "k8s_events_total %d\n", r.Events.Total)
 		fmt.Fprintf(w, "k8s_events_warning %d\n", r.Events.Warning)
+
+		fmt.Fprintf(w, "k8s_namespaces_total %d\n", r.Namespaces.Total)
+
+		for _, er := range r.EventReasons {
+			fmt.Fprintf(w, "k8s_event_reason_warning_total{reason=%q} %d\n", er.Reason, er.Count)
+		}
 	})
 
 	fmt.Println("Metrics server:", addr)

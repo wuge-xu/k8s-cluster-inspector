@@ -1,6 +1,8 @@
 package checker
 
 import (
+	"sort"
+
 	corev1 "k8s.io/api/core/v1"
 
 	"github.com/boserwuge/k8s-cluster-inspector/internal/model"
@@ -9,9 +11,12 @@ import (
 func CheckEvents(events []corev1.Event, r *model.Report) {
 	r.Events.Total = len(events)
 
+	reasonCounter := make(map[string]int)
+
 	for _, event := range events {
 		if event.Type == corev1.EventTypeWarning {
 			r.Events.Warning++
+			reasonCounter[event.Reason]++
 
 			if len(r.AbnormalEvents) < 10 {
 				r.AbnormalEvents = append(r.AbnormalEvents, model.AbnormalEvent{
@@ -27,6 +32,21 @@ func CheckEvents(events []corev1.Event, r *model.Report) {
 		} else {
 			r.Events.Normal++
 		}
+	}
+
+	for reason, count := range reasonCounter {
+		r.EventReasons = append(r.EventReasons, model.EventReason{
+			Reason: reason,
+			Count:  count,
+		})
+	}
+
+	sort.Slice(r.EventReasons, func(i, j int) bool {
+		return r.EventReasons[i].Count > r.EventReasons[j].Count
+	})
+
+	if len(r.EventReasons) > 10 {
+		r.EventReasons = r.EventReasons[:10]
 	}
 }
 
