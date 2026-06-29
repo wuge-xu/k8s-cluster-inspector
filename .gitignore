@@ -3,3 +3,4 @@ bin/
 tmp/
 *.log
 .DS_Store
+report.html

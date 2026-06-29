@@ -15,7 +15,7 @@ build:
 >go build -o bin/$(APP_NAME) ./cmd/inspector
 
 clean:
->rm -rf bin report.json
+>rm -rf bin report.json report.html
 
 docker-build:
 >docker build -t $(IMAGE_NAME) .

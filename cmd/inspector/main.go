@@ -74,6 +74,7 @@ func main() {
 
 	reporter.PrintConsole(report)
 	reporter.WriteJSON(report, "report.json")
+	reporter.WriteHTML(report, "report.html")
 
 	if *enableMetrics {
 		metrics.Start(report, *metricsAddr)
