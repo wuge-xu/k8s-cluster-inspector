@@ -17,7 +17,6 @@ import (
 )
 
 func main() {
-
 	enableMetrics := flag.Bool("metrics", false, "Enable Prometheus metrics endpoint")
 	metricsAddr := flag.String("metrics-addr", ":9090", "Metrics listen address")
 	flag.Parse()
@@ -50,6 +49,16 @@ func main() {
 		panic(err)
 	}
 
+	pvcs, err := clientset.CoreV1().PersistentVolumeClaims("").List(ctx, metav1.ListOptions{})
+	if err != nil {
+		panic(err)
+	}
+
+	events, err := clientset.CoreV1().Events("").List(ctx, metav1.ListOptions{})
+	if err != nil {
+		panic(err)
+	}
+
 	report := model.Report{
 		Time: time.Now().Format("2006-01-02 15:04:05"),
 	}
@@ -58,6 +67,8 @@ func main() {
 	checker.CheckPods(pods.Items, &report)
 	checker.CheckDeployments(deployments.Items, &report)
 	checker.CheckServices(services.Items, &report)
+	checker.CheckPVCs(pvcs.Items, &report)
+	checker.CheckEvents(events.Items, &report)
 
 	report.Score = checker.CalculateScore(report)
 

@@ -6,8 +6,12 @@ type Report struct {
 	Pods                Pods                 `json:"pods"`
 	Deployments         Deployments          `json:"deployments"`
 	Services            Services             `json:"services"`
+	PVCs                PVCs                 `json:"pvcs"`
+	Events              Events               `json:"events"`
 	AbnormalPods        []AbnormalPod        `json:"abnormal_pods"`
 	AbnormalDeployments []AbnormalDeployment `json:"abnormal_deployments"`
+	AbnormalPVCs        []AbnormalPVC        `json:"abnormal_pvcs"`
+	AbnormalEvents      []AbnormalEvent      `json:"abnormal_events"`
 	Score               int                  `json:"health_score"`
 }
 
@@ -41,6 +45,19 @@ type Services struct {
 	LoadBalancer int `json:"load_balancer"`
 }
 
+type PVCs struct {
+	Total   int `json:"total"`
+	Bound   int `json:"bound"`
+	Pending int `json:"pending"`
+	Lost    int `json:"lost"`
+}
+
+type Events struct {
+	Total   int `json:"total"`
+	Normal  int `json:"normal"`
+	Warning int `json:"warning"`
+}
+
 type AbnormalPod struct {
 	Namespace    string `json:"namespace"`
 	Name         string `json:"name"`
@@ -57,4 +74,22 @@ type AbnormalDeployment struct {
 	AvailableReplicas int32  `json:"available_replicas"`
 	Reason            string `json:"reason"`
 	Suggestion        string `json:"suggestion"`
+}
+
+type AbnormalPVC struct {
+	Namespace  string `json:"namespace"`
+	Name       string `json:"name"`
+	Phase      string `json:"phase"`
+	VolumeName string `json:"volume_name"`
+	Suggestion string `json:"suggestion"`
+}
+
+type AbnormalEvent struct {
+	Namespace      string `json:"namespace"`
+	Name           string `json:"name"`
+	InvolvedObject string `json:"involved_object"`
+	Reason         string `json:"reason"`
+	Message        string `json:"message"`
+	Count          int32  `json:"count"`
+	Suggestion     string `json:"suggestion"`
 }

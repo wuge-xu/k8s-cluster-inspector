@@ -11,6 +11,14 @@ func CalculateScore(r model.Report) int {
 	score -= r.Pods.ImagePullBackOff * 8
 	score -= r.Pods.HighRestartPods * 3
 	score -= r.Deployments.Unavailable * 8
+	score -= r.PVCs.Pending * 8
+	score -= r.PVCs.Lost * 12
+
+	if r.Events.Warning > 10 {
+		score -= 10
+	} else {
+		score -= r.Events.Warning
+	}
 
 	if score < 0 {
 		return 0
