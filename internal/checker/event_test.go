@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/boserwuge/k8s-cluster-inspector/internal/model"
 )
@@ -11,11 +12,13 @@ import (
 func TestCheckEventsAggregatesWarningEventCounts(t *testing.T) {
 	events := []corev1.Event{
 		{
-			Type:      corev1.EventTypeWarning,
-			Reason:    "FailedScheduling",
-			Count:     3,
-			Namespace: "default",
-			Name:      "event-1",
+			ObjectMeta: metav1.ObjectMeta{
+				Namespace: "default",
+				Name:      "event-1",
+			},
+			Type:   corev1.EventTypeWarning,
+			Reason: "FailedScheduling",
+			Count:  3,
 			InvolvedObject: corev1.ObjectReference{
 				Kind: "Pod",
 				Name: "pod-a",
@@ -23,11 +26,13 @@ func TestCheckEventsAggregatesWarningEventCounts(t *testing.T) {
 			Message: "failed scheduling",
 		},
 		{
-			Type:      corev1.EventTypeWarning,
-			Reason:    "FailedScheduling",
-			Count:     1,
-			Namespace: "default",
-			Name:      "event-2",
+			ObjectMeta: metav1.ObjectMeta{
+				Namespace: "default",
+				Name:      "event-2",
+			},
+			Type:   corev1.EventTypeWarning,
+			Reason: "FailedScheduling",
+			Count:  1,
 			InvolvedObject: corev1.ObjectReference{
 				Kind: "Pod",
 				Name: "pod-b",
@@ -35,11 +40,13 @@ func TestCheckEventsAggregatesWarningEventCounts(t *testing.T) {
 			Message: "failed scheduling again",
 		},
 		{
-			Type:      corev1.EventTypeWarning,
-			Reason:    "FailedMount",
-			Count:     2,
-			Namespace: "monitoring",
-			Name:      "event-3",
+			ObjectMeta: metav1.ObjectMeta{
+				Namespace: "monitoring",
+				Name:      "event-3",
+			},
+			Type:   corev1.EventTypeWarning,
+			Reason: "FailedMount",
+			Count:  2,
 			InvolvedObject: corev1.ObjectReference{
 				Kind: "Pod",
 				Name: "pod-c",
