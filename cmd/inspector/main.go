@@ -81,6 +81,7 @@ func main() {
 	diagnosisEngine := diagnosis.NewEngine(
 		diagnosisrules.NewPodCrashLoopRule(true),
 		diagnosisrules.NewPodImagePullRule(true),
+		diagnosisrules.NewPodOOMKilledRule(true),
 	)
 
 	report.Diagnoses = diagnosisEngine.Run(diagnosis.ClusterData{
