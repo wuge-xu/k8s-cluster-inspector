@@ -11,6 +11,8 @@ import (
 
 	"github.com/boserwuge/k8s-cluster-inspector/internal/checker"
 	"github.com/boserwuge/k8s-cluster-inspector/internal/client"
+	"github.com/boserwuge/k8s-cluster-inspector/internal/diagnosis"
+	diagnosisrules "github.com/boserwuge/k8s-cluster-inspector/internal/diagnosis/rules"
 	"github.com/boserwuge/k8s-cluster-inspector/internal/metrics"
 	"github.com/boserwuge/k8s-cluster-inspector/internal/model"
 	reporter "github.com/boserwuge/k8s-cluster-inspector/internal/report"
@@ -75,6 +77,14 @@ func main() {
 	checker.CheckPVCs(pvcs.Items, &report)
 	checker.CheckEvents(events.Items, &report)
 	checker.CheckNamespaces(namespaces.Items, pods.Items, deployments.Items, pvcs.Items, &report)
+
+	diagnosisEngine := diagnosis.NewEngine(
+		diagnosisrules.NewPodCrashLoopRule(true),
+	)
+
+	report.Diagnoses = diagnosisEngine.Run(diagnosis.ClusterData{
+		Pods: pods.Items,
+	})
 
 	report.Score = checker.CalculateScore(report)
 

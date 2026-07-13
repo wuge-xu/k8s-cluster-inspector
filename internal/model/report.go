@@ -14,6 +14,7 @@ type Report struct {
 	AbnormalDeployments []AbnormalDeployment `json:"abnormal_deployments"`
 	AbnormalPVCs        []AbnormalPVC        `json:"abnormal_pvcs"`
 	AbnormalEvents      []AbnormalEvent      `json:"abnormal_events"`
+	Diagnoses           []Diagnosis          `json:"diagnoses"`
 	Score               int                  `json:"health_score"`
 }
 
