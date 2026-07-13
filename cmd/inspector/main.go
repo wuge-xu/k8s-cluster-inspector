@@ -83,6 +83,8 @@ func main() {
 		diagnosisrules.NewPodImagePullRule(true),
 		diagnosisrules.NewPodOOMKilledRule(true),
 		diagnosisrules.NewNodeNotReadyRule(true),
+		diagnosisrules.NewDeploymentUnavailableRule(true),
+		diagnosisrules.NewPVCPendingRule(true),
 	)
 
 	report.Diagnoses = diagnosisEngine.Run(diagnosis.ClusterData{
