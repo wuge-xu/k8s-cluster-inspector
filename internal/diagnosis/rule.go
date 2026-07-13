@@ -7,7 +7,8 @@ import (
 )
 
 type ClusterData struct {
-	Pods []corev1.Pod
+	Pods  []corev1.Pod
+	Nodes []corev1.Node
 }
 
 type Rule interface {

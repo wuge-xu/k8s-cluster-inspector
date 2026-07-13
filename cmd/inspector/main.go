@@ -82,10 +82,12 @@ func main() {
 		diagnosisrules.NewPodCrashLoopRule(true),
 		diagnosisrules.NewPodImagePullRule(true),
 		diagnosisrules.NewPodOOMKilledRule(true),
+		diagnosisrules.NewNodeNotReadyRule(true),
 	)
 
 	report.Diagnoses = diagnosisEngine.Run(diagnosis.ClusterData{
-		Pods: pods.Items,
+		Pods:  pods.Items,
+		Nodes: nodes.Items,
 	})
 
 	report.Score = checker.CalculateScore(report)
